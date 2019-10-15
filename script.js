@@ -31,41 +31,74 @@ void main()
 const createCube = (s = 1) => {
     return {
         vertices: [
-            -s, -s, s, // front bottom left
-            s, -s, s,  // front bottom right
-            s,  s, s,  // front top right
-            -s,  s, s, // front top left
+            -s, -s,  s,
+             s, -s,  s,
+             s,  s,  s,
+            -s,  s,  s,
 
-            -s, -s, -s, // back bottom left
-            s, -s, -s,  // back bottom right
-            s,  s, -s,  // back top right
-            -s,  s, -s, // back top left
+            -s, -s, -s,
+            -s,  s, -s,
+             s,  s, -s,
+             s, -s, -s,
+
+            -s,  s, -s,
+            -s,  s,  s,
+             s,  s,  s,
+             s,  s, -s,
+
+            -s, -s, -s,
+             s, -s, -s,
+             s, -s,  s,
+            -s, -s,  s,
+
+             s, -s, -s,
+             s,  s, -s,
+             s,  s,  s,
+             s, -s,  s,
+
+            -s, -s, -s,
+            -s, -s,  s,
+            -s,  s,  s,
+            -s,  s, -s,
         ],
         indices: [
-            0, 1, 2, // front
-            0, 2, 3,
-            4, 6, 5, // back
-            4, 7, 6,
-            3, 2, 6, // top
-            3, 6, 7,
-            0, 1, 5, // bottom
-            0, 5, 4,
-            4, 0, 3, // left
-            4, 3, 7,
-            1, 5, 6, // right
-            1, 6, 2
+            0,  1,  2,      0,  2,  3,    // front
+            4,  5,  6,      4,  6,  7,    // back
+            8,  9,  10,     8,  10, 11,   // top
+            12, 13, 14,     12, 14, 15,   // bottom
+            16, 17, 18,     16, 18, 19,   // right
+            20, 21, 22,     20, 22, 23,   // left
         ],
         textureCoords: [
-            // Front
             0.0,  0.0,
             1.0,  0.0,
             1.0,  1.0,
             0.0,  1.0,
             // Back
-            1.0,  1.0,
-            0.0,  1.0,
             0.0,  0.0,
             1.0,  0.0,
+            1.0,  1.0,
+            0.0,  1.0,
+            // Top
+            0.0,  0.0,
+            1.0,  0.0,
+            1.0,  1.0,
+            0.0,  1.0,
+            // Bottom
+            0.0,  0.0,
+            1.0,  0.0,
+            1.0,  1.0,
+            0.0,  1.0,
+            // Right
+            0.0,  0.0,
+            1.0,  0.0,
+            1.0,  1.0,
+            0.0,  1.0,
+            // Left
+            0.0,  0.0,
+            1.0,  0.0,
+            1.0,  1.0,
+            0.0,  1.0,
         ]
     };
 };
@@ -173,14 +206,16 @@ window.onload = () => {
     gl.uniformMatrix4fv(rotPos, false, rotateM);
 
     var then = 0;
+    var squareRotation = 0;
     function render(now) {
         now *= 0.001;
         const deltaTime = now - then;
         then = now;
+        squareRotation += deltaTime;
 
         glMatrix.mat4.identity(rotateM);
-        // glMatrix.mat4.rotateX(rotateM, rotateM, now);
-        glMatrix.mat4.rotateY(rotateM, rotateM, now);
+        glMatrix.mat4.rotateX(rotateM, rotateM, squareRotation);
+        glMatrix.mat4.rotateY(rotateM, rotateM, squareRotation);
         gl.uniformMatrix4fv(rotPos, false, rotateM);
 
         gl.clearColor(0,0,0,1);
